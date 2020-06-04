@@ -92,12 +92,10 @@ def main():
     dims = 64
     normalized = True
 
-    classes = ["normal","pneumonia"]
+    classes = ["normal","sars-cov-2"]
     x_train, y_train, x_test, y_test = load_dataset(dims)
 
     _, _, parameters = model(x_train, y_train, x_test, y_test)
-
-    print(parameters['W1']) 
 
 def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
           num_epochs=100, minibatch_size=64, print_cost=True):
@@ -153,25 +151,34 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
         
         for epoch in range(num_epochs):
 
-            minibatch_cost = 0.
-            num_minibatches = int(m / minibatch_size)
-            seed = seed + 1
-            minibatches = random_mini_batches(X_train, Y_train, minibatch_size, seed)
-
-            for minibatch in minibatches:
-
-                (minibatch_X, minibatch_Y) = minibatch
-
-                _ , temp_cost = sess.run([optimizer, cost], feed_dict={X:minibatch_X, Y:minibatch_Y})
-                
-                minibatch_cost += temp_cost / num_minibatches
-                
+            _ , temp_cost = sess.run([optimizer, cost], feed_dict={X:X_train, Y:Y_train})
 
             # Print the cost every epoch
             if print_cost == True and epoch % 5 == 0:
-                print ("Cost after epoch %i: %f" % (epoch, minibatch_cost))
+                print ("Cost after epoch %i: %f" % (epoch, temp_cost))
             if print_cost == True and epoch % 1 == 0:
-                costs.append(minibatch_cost)
+                costs.append(temp_cost)
+            # minibatch_cost = 0.
+            # num_minibatches = int(m / minibatch_size)
+            # seed = seed + 1
+            # minibatches = random_mini_batches(X_train, Y_train, minibatch_size, seed)
+
+            # for minibatch in minibatches:
+
+            #     (minibatch_X, minibatch_Y) = minibatch
+
+            #     _ , temp_cost = sess.run([optimizer, cost], feed_dict={X:minibatch_X, Y:minibatch_Y})
+                
+            #     minibatch_cost += temp_cost / num_minibatches
+                
+            # # print(Z3.eval({X: X_train, Y: Y_train}))
+            # print(cost.eval({X: X_train, Y: Y_train}))
+
+            # # Print the cost every epoch
+            # if print_cost == True and epoch % 5 == 0:
+            #     print ("Cost after epoch %i: %f" % (epoch, minibatch_cost))
+            # if print_cost == True and epoch % 1 == 0:
+            #     costs.append(minibatch_cost)
         
         # for val in net.values():
         #     print(val.shape)
@@ -238,8 +245,11 @@ def random_mini_batches(X, Y, mini_batch_size = 64, seed = 0):
 
 
 def load_dataset(dims):
-    x_train = pickle.load(open("./covid/" + str(dims) + "/x_train_d.p","rb"))
-    y_train = pickle.load(open("./covid/" + str(dims) + "/y_train_d.p","rb"))
+
+    # add d to use distorted aug dataset
+    # add b to use resampled aug dataset
+    x_train = pickle.load(open("./covid/" + str(dims) + "/x_train.p","rb"))
+    y_train = pickle.load(open("./covid/" + str(dims) + "/y_train.p","rb"))
     x_test = pickle.load(open("./covid/" + str(dims) + "/x_test.p","rb"))
     y_test = pickle.load(open("./covid/" + str(dims) + "/y_test.p","rb"))
 
