@@ -98,7 +98,7 @@ def main():
     _, _, parameters = model(x_train, y_train, x_test, y_test)
 
 def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
-          num_epochs=100, minibatch_size=64, print_cost=True):
+          num_epochs=1, minibatch_size=64, print_cost=True):
     """
     Implements a three-layer ConvNet in Tensorflow:
     CONV2D -> RELU -> MAXPOOL -> CONV2D -> RELU -> MAXPOOL -> FLATTEN -> FULLYCONNECTED
@@ -248,8 +248,8 @@ def load_dataset(dims):
 
     # add d to use distorted aug dataset
     # add b to use resampled aug dataset
-    x_train = pickle.load(open("./covid/" + str(dims) + "/x_train.p","rb"))
-    y_train = pickle.load(open("./covid/" + str(dims) + "/y_train.p","rb"))
+    x_train = pickle.load(open("./covid/" + str(dims) + "/x_train_d.p","rb"))
+    y_train = pickle.load(open("./covid/" + str(dims) + "/y_train_d.p","rb"))
     x_test = pickle.load(open("./covid/" + str(dims) + "/x_test.p","rb"))
     y_test = pickle.load(open("./covid/" + str(dims) + "/y_test.p","rb"))
 

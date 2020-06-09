@@ -5,7 +5,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 def main():
-    dims = 32
+    dims = 64
     x_train, y_train = load_dataset(dims)
 
     x_embed = TSNE(n_components=2).fit_transform(x_train.T)
@@ -14,15 +14,15 @@ def main():
     y_train = y_train[0]
 
     plt.figure()
-    plt.plot(x_embed[y_train == 1, -2], x_embed[y_train == 1, -1], 'bx', label='pneumonia')
+    plt.plot(x_embed[y_train == 1, -2], x_embed[y_train == 1, -1], 'bx', label='sars-cov-2')
     plt.plot(x_embed[y_train == 0, -2], x_embed[y_train == 0, -1], 'go', label='normal')
     plt.legend()
-    plt.savefig("tsne_embed.png")
+    plt.savefig("./covid/plots/covid_d_tsne_embed.png")
 
 
 def load_dataset(dims):
-    x_train = pickle.load(open("./coronahack/" + str(dims) + "/x_train.p","rb"))
-    y_train = pickle.load(open("./coronahack/" + str(dims) + "/y_train.p","rb"))
+    x_train = pickle.load(open("./covid/" + str(dims) + "/x_train_d.p","rb"))
+    y_train = pickle.load(open("./covid/" + str(dims) + "/y_train_d.p","rb"))
  
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)

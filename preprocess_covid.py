@@ -78,6 +78,12 @@ def get_chestxray_covid(image_dim):
 def distort(images):
     distorted_images = []
     for image in images:
+
+        # plt.clf()
+        # plt.imshow(image), plt.title("SARS-CoV-2: no distortion")
+        # plt.xticks([]), plt.yticks([])
+        # plt.savefig("./covid/plots/no-distort.png")
+        
         gauss_p = np.random.rand()
         if gauss_p > 0.3:
             blur_factor1 = np.random.randint(1,7)
@@ -94,6 +100,13 @@ def distort(images):
             # horizontal flip
             image = cv2.flip(image,1)
         
+        # plt.clf()
+        # plt.imshow(image), plt.title("SARS-CoV-2: with distortion")
+        # plt.xticks([]), plt.yticks([])
+        # plt.savefig("./covid/plots/distort.png")
+
+        # return images
+
         distorted_images.append(image)
     
     return distorted_images
